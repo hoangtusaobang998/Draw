@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:" + getPackageName()));
                 startActivityForResult(intent, 1234);
+            }else {
+                startService(new Intent(this, ChatHeadService.class));
             }
         } else {
             startService(new Intent(this, ChatHeadService.class));
