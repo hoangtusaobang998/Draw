@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.IBinder;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,28 +32,36 @@ public class ChatHeadService extends Service {
         super.onCreate();
 
         mChatHeadView = LayoutInflater.from(this).inflate(R.layout.activity_main, null);
+        int flags;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            flags = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            flags = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        }
 
-
-        //TODO THẦY ƠI EM NGHĨ LÀ NÓ NẰM TRONG PHẦN NÀY Ạ
-        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                flags,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
+
+
 
         params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = 0;
         params.y = 100;
 
         //Add the view to the window
-        mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        mWindowManager = (WindowManager)
+
+                getSystemService(WINDOW_SERVICE);
         mWindowManager.addView(mChatHeadView, params);
 //….
 //….
 
 //Drag and move chat head using user's touch action.
-     //   chatHeadImage.setOnTouchListener(new View.OnTouchListener() {
+        //   chatHeadImage.setOnTouchListener(new View.OnTouchListener() {
 //            private int lastAction;
 //            private int initialX;
 //            private int initialY;
